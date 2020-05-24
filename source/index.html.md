@@ -2,9 +2,8 @@
 title: Hi there!
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - python
-  - javascript
+  - shell: Sample request
+  - json: Sample response
 
 toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
@@ -16,190 +15,141 @@ search: true
 ---
 
 # Introduction
+*Welcome to my Slate page. This reference document is based on an exercise in <a href ="https://www.udemy.com/course/learn-api-technical-writing-2-rest-for-writers/" target ="_blank">Peter Gruenbaum's course on API docs</a>. <br>This API does not exist. :)*
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
+Use the SoundDate API to upload a sound file to your profile page, and get information on other users' sound files.
+ 
 # Authentication
 
-> To authorize, use this code:
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
+```shell
+curl GET '{{soundgate.com}}/profile/token?email={{username}}&password={{password}}'
 ```
+```json
+# Sample response for Bearer token:
+{
+  "code": "0",
+  "data": {
+    "token": "QyJUCOyQThm3xG2Hwk5X"
+  }
+}
+```
+
+SoundDate uses Bearer authentication to allow access to the API. Include the token in all API requests to the server in the API header.  
+Generate a Bearer token with your user name and password either from the UI (see `link`) or from command line.
+
+## Headers
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl GET https://api.sounddate.com/profile/sound \
+--header 'Content-Type: audio/mpeg' \
+--header 'Accept: application/json' \
+--header "Authorization: {sounddatetoken}" \
+
+Replace `sounddatetoken` with your Bearer token.
 ```
 
-```javascript
-const kittn = require('kittn');
+Refer to the following table for details.
 
-let api = kittn.authorize('meowmeowmeow');
-```
+| Name         | Description                            | Required | Values                                                           |
+|--------------|----------------------------------------|----------|------------------------------------------------------------------|
+| Bearer       | Access Token                           | Required | generate a Bearer token with your user name and password.  |
+| Content-Type | The format of the sound file to upload | Optional | audio/mpeg                                       |
+| Accept       | The format of the returned data        | Optional | application/xml or application/json <br>Default is application/json. |
 
-> Make sure to replace `meowmeowmeow` with your API key.
+# Resource summary
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+| Method         | HTTP request                            | Description |
+|--------------|----------------------------------------|----------|
+| create       | `POST https://api.sounddate.com/profile/sound/{sound file}` | Uploads a new sound file in the user's profile. | 
+| get | `GET https://api.sounddate.com/profile/{user id}/profile/sound` |Retrieves a list of sound file URLs and their lengths for the specified user.  | 
 
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+# Upload a sound file
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl POST https://api.sounddate.com/profile/sound/{sound file} \
+--header 'Content-Type: audio/mpeg' \
+--header 'Accept: application/json' \
+--header "Authorization: {sounddatetoken}" \
 ```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
 
 ```json
+200 - OK
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+    "id": 3543,
+    "length": 19.8
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+Uploads a sound file with the following characteristics:  
+- Maximum duration: 5 minutes or shorter  
+- Maximum file size: 4 MB  
+- Accepted file types: .mpeg or .wav
+
+### HTTP Request
+`POST https://api.sounddate.com/profile/sound/{sound file}`
+
+### Response
+
+Parameter | Description | Type | Notes
+--------- | ------- | -----------| ------
+`id` | The ID of the new sound file | integer | 
+`length` | The length of the sound file | float | Length is in seconds.
+
+
+# Retrieve a list of sound files
+
+```shell
+curl GET https://api.sounddate.com/profile/345354/profile/sound?sortOrder=shortest \
+--header 'Content-Type: audio/mpeg' \
+--header 'Accept: application/json' \
+--header "Authorization: {sounddatetoken}" 
+```
+
+```json
+{
+ "soundFiles": [
+ {
+ "id": 23456,
+ "url": "https://api.sounddate.com/profile/sound/23456.mp3",
+ "length": 11.2
+ },
+ {
+ "id": 24559,
+ "url": "https://api.sounddate.com/profile/sound/24559.mp3",
+ "length": 19.8
+ }
+ ]
+}
+
+```
+
+Retrieves a list of sound file URLs and their lengths for the specified user.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.sounddate.com/profile/{user id}/profile/sound`  
+where `{user id}` is the ID of the user whose sound files you're interested in.
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description| Type| Required | Notes 
+--------- | ----------- | --------| --------| ------------
+sortOrder | The order to return the sound file information. | string | Optional | Valid values: `mostRecent`, `earliest`, `shortest`, `longest`. <br>Default is `mostRecent`.  
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+Note:  
+- `mostRecent` returns the most recent sound files to the earliest.<br>
+- `earliest` returns the earliest sound files to the most recent.<br>
+- `shortest` returns the shortest sound files to longest.<br>
+- `longest` returns the longest sound files to the shortest.
 
-## Get a Specific Kitten
+### Response
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+| Element    | Description                    | Type    | Notes                 |
+|------------|--------------------------------|---------|-----------------------|
+| **soundFiles** | List of sound file information | Array   |                       |
+|         `id` | The ID of the sound file       | integer |                       |
+|        `url` | The URL of the sound file      | string  |                       |
+|     `length` | The length of the sound file   | float   | Length is in seconds. |
