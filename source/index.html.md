@@ -149,7 +149,7 @@ Note:
 
 | Element    | Description                    | Type    | Notes                 |
 |------------|--------------------------------|---------|-----------------------|
-| **soundFiles** | List of sound file information | Array   |                       |
+| **soundFiles** | List of sound file information | array   |                       |
 |         `id` | The ID of the sound file       | integer |                       |
 |        `url` | The URL of the sound file      | string  |                       |
 |     `length` | The length of the sound file   | float   | Length is in seconds. |
