@@ -40,10 +40,10 @@ Generate a Bearer token with your user name and password either from the UI (see
 ## Headers
 
 ```shell
-curl GET https://api.sounddate.com/profile/sound \
---header 'Content-Type: audio/mpeg' \
---header 'Accept: application/json' \
---header "Authorization: {sounddatetoken}" \
+curl GET https://api.sounddate.com/profile/sound 
+--header 'Content-Type: audio/mpeg' 
+--header 'Accept: application/json' 
+--header "Authorization: {sounddatetoken}" 
 
 Replace `sounddatetoken` with your Bearer token.
 ```
@@ -67,10 +67,10 @@ Refer to the following table for details.
 # Upload a sound file
 
 ```shell
-curl POST https://api.sounddate.com/profile/sound/{sound file} \
---header 'Content-Type: audio/mpeg' \
---header 'Accept: application/json' \
---header "Authorization: {sounddatetoken}" \
+curl POST https://api.sounddate.com/profile/sound/{sound file} 
+--header 'Content-Type: audio/mpeg' 
+--header 'Accept: application/json' 
+--header "Authorization: {sounddatetoken}" 
 ```
 
 ```json
@@ -102,9 +102,9 @@ Parameter | Description | Type | Notes
 # Retrieve a list of sound files
 
 ```shell
-curl GET https://api.sounddate.com/profile/345354/profile/sound?sortOrder=shortest \
---header 'Content-Type: audio/mpeg' \
---header 'Accept: application/json' \
+curl GET https://api.sounddate.com/profile/345354/profile/sound?sortOrder=shortest 
+--header 'Content-Type: audio/mpeg' 
+--header 'Accept: application/json' 
 --header "Authorization: {sounddatetoken}" 
 ```
 
