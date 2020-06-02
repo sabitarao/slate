@@ -285,10 +285,10 @@
 </span></code></pre></div>
 <p>SoundDate uses Bearer authentication to allow access to the API. Include the token in all API requests to the server in the API header.<br>
 Generate a Bearer token with your user name and password either from the UI (see <code>link</code>) or from command line.</p>
-<h2 id='headers'>Headers</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl GET https://api.sounddate.com/profile/sound <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s2">"Authorization: {sounddatetoken}"</span> <span class="se">\</span>
+<h2 id='headers'>Headers</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl GET https://api.sounddate.com/profile/sound 
+<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> 
+<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> 
+<span class="nt">--header</span> <span class="s2">"Authorization: {sounddatetoken}"</span> 
 
 Replace <span class="sb">`</span>sounddatetoken<span class="sb">`</span> with your Bearer token.
 </code></pre></div>
@@ -340,10 +340,10 @@ Replace <span class="sb">`</span>sounddatetoken<span class="sb">`</span> with yo
 <td>Retrieves a list of sound file URLs and their lengths for the specified user.</td>
 </tr>
 </tbody></table>
-<h1 id='upload-a-sound-file'>Upload a sound file</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl POST https://api.sounddate.com/profile/sound/<span class="o">{</span>sound file<span class="o">}</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s2">"Authorization: {sounddatetoken}"</span> <span class="se">\</span>
+<h1 id='upload-a-sound-file'>Upload a sound file</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl POST https://api.sounddate.com/profile/sound/<span class="o">{</span>sound file<span class="o">}</span> 
+<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> 
+<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> 
+<span class="nt">--header</span> <span class="s2">"Authorization: {sounddatetoken}"</span> 
 </code></pre></div><div class="highlight"><pre class="highlight json tab-json"><code><span class="mi">200</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="err">OK</span><span class="w">
 </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
@@ -380,9 +380,9 @@ Replace <span class="sb">`</span>sounddatetoken<span class="sb">`</span> with yo
 <td>Length is in seconds.</td>
 </tr>
 </tbody></table>
-<h1 id='retrieve-a-list-of-sound-files'>Retrieve a list of sound files</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl GET https://api.sounddate.com/profile/345354/profile/sound?sortOrder<span class="o">=</span>shortest <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> <span class="se">\</span>
-<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+<h1 id='retrieve-a-list-of-sound-files'>Retrieve a list of sound files</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl GET https://api.sounddate.com/profile/345354/profile/sound?sortOrder<span class="o">=</span>shortest 
+<span class="nt">--header</span> <span class="s1">'Content-Type: audio/mpeg'</span> 
+<span class="nt">--header</span> <span class="s1">'Accept: application/json'</span> 
 <span class="nt">--header</span> <span class="s2">"Authorization: {sounddatetoken}"</span> 
 </code></pre></div><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
  </span><span class="nl">"soundFiles"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
